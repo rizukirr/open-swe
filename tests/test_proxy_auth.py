@@ -198,7 +198,6 @@ class TestRefreshProxyOnSandboxReuse:
         mock_sandbox = MagicMock(id="sandbox-cached")
 
         with (
-            patch("agent.server.get_config", return_value=config),
             patch(
                 "agent.server.resolve_github_token",
                 new_callable=AsyncMock,
@@ -216,14 +215,14 @@ class TestRefreshProxyOnSandboxReuse:
             ),
             patch("agent.server._configure_github_proxy") as mock_proxy,
             patch(
-                "agent.server._clone_or_pull_repo_in_sandbox",
+                "agent.server.aresolve_sandbox_work_dir",
                 new_callable=AsyncMock,
-                return_value="/workspace/open-swe",
+                return_value="/workspace",
             ),
             patch(
-                "agent.server.read_agents_md_in_sandbox",
+                "agent.server.check_or_recreate_sandbox",
                 new_callable=AsyncMock,
-                return_value="",
+                return_value=mock_sandbox,
             ),
             patch("agent.server.make_model", return_value=MagicMock()),
             patch("agent.server.construct_system_prompt", return_value="prompt"),
@@ -248,7 +247,6 @@ class TestRefreshProxyOnSandboxReuse:
         mock_sandbox = MagicMock(id="sandbox-existing")
 
         with (
-            patch("agent.server.get_config", return_value=config),
             patch(
                 "agent.server.resolve_github_token",
                 new_callable=AsyncMock,
@@ -267,14 +265,9 @@ class TestRefreshProxyOnSandboxReuse:
             ),
             patch("agent.server._configure_github_proxy") as mock_proxy,
             patch(
-                "agent.server._clone_or_pull_repo_in_sandbox",
+                "agent.server.aresolve_sandbox_work_dir",
                 new_callable=AsyncMock,
-                return_value="/workspace/open-swe",
-            ),
-            patch(
-                "agent.server.read_agents_md_in_sandbox",
-                new_callable=AsyncMock,
-                return_value="",
+                return_value="/workspace",
             ),
             patch("agent.server.make_model", return_value=MagicMock()),
             patch("agent.server.construct_system_prompt", return_value="prompt"),

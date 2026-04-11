@@ -85,6 +85,10 @@ def create_langsmith_sandbox(
 ) -> SandboxBackendProtocol:
     """Create or connect to a LangSmith sandbox without automatic cleanup.
 
+    This function directly uses the LangSmithProvider to create/connect to sandboxes
+    without the context manager cleanup, allowing sandboxes to persist across
+    multiple agent invocations.
+
     Args:
         sandbox_id: Optional existing sandbox ID to connect to.
                    If None, creates a new sandbox.
